@@ -1,3 +1,38 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Dolphin"
+version = "0.1.0"
+description = "Document Image Parsing via Heterogeneous Anchor Prompting"
+authors = [
+    { name = "ByteDance", email = "contact@bytedance.com" }
+]
+license = "Apache-2.0"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy==1.24.4"
+    "omegaconf==2.3.0"
+    "opencv-python==4.11.0.86"
+    "opencv-python-headless==4.5.5.64"
+    "pillow==9.3.0"
+    "timm==0.5.4"
+    "torch==2.1.0"
+    "torchvision==0.16.0"
+    "transformers==4.47.0"
+    "accelerate==1.6.0"
+    "pymupdf==1.26"
+    # Add other dependencies from requirements.txt here
+]
+
+[project.scripts]
+dolphin-run = "dolphin.dolphin_run:main"
+
+[tool.setuptools]
+packages = ["dolphin"]
+
 [tool.black]
 line-length = 120
 include = '\.pyi?$'

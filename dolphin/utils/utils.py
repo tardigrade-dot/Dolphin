@@ -15,7 +15,7 @@ import numpy as np
 import pymupdf
 from PIL import Image
 
-from utils.markdown_utils import MarkdownConverter
+from dolphin.utils.markdown_utils import MarkdownConverter
 
 
 def save_figure_to_local(pil_crop, save_dir, image_name, reading_order):
