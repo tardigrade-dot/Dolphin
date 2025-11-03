@@ -90,11 +90,6 @@ def convert_pdf_to_images(pdf_path, target_size=896):
         return []
 
 
-# def is_pdf_file(file_path):
-#     """Check if file is a PDF"""
-#     return file_path.lower().endswith(".pdf")
-
-
 def save_combined_pdf_results(all_page_results, pdf_path, save_dir):
     """Save combined results for multi-page PDF with both JSON and Markdown
 
@@ -168,8 +163,6 @@ def parse_layout_string(bbox_str):
     """
     parsed_results = []
     
-    # 先尝试新格式（你的模型输出）
-    # 使用[PAIR_SEP]分割不同的区域
     segments = bbox_str.split('[PAIR_SEP]')
     new_segments = []
     for seg in segments:
@@ -180,7 +173,6 @@ def parse_layout_string(bbox_str):
         if not segment:
             continue
             
-        # 匹配坐标和标签
         coord_pattern = r'\[(\d*\.?\d+),(\d*\.?\d+),(\d*\.?\d+),(\d*\.?\d+)\]'
         label_pattern = r'\]\[([^\]]+)\]'
         
@@ -189,7 +181,6 @@ def parse_layout_string(bbox_str):
         
         if coord_match and label_matches:
             coords = [float(coord_match.group(i)) for i in range(1, 5)]
-            # 使用第一个标签作为主要标签
             label = label_matches[0].strip()
             parsed_results.append((coords, label))
     

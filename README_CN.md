@@ -170,7 +170,7 @@ python demo_page.py --model_path ./hf_model --save_dir ./results \
 # 使用自定义批次大小进行并行元素解码
 python demo_page.py --model_path ./hf_model --save_dir ./results \
     --input_path ./demo/page_imgs \
-    --max_batch_size 16
+    --max_batch_size 8
 ```
 
 ### 🧩 元素级解析

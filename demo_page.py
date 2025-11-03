@@ -89,7 +89,7 @@ class DOLPHIN:
             bad_words_ids=[[self.tokenizer.unk_token_id]],
             return_dict_in_generate=True,
             do_sample=False,
-            num_beams=2
+            num_beams=1
         )
         
         # Process output
@@ -186,16 +186,15 @@ def process_elements(layout_results, padded_image, dims, model, max_batch_size, 
     """Parse all document elements with parallel decoding"""
     layout_results = parse_layout_string(layout_results)
 
-    # 按处理方式分组（而不是按label分组）
-    tab_elements = []      # 表格元素
-    equ_elements = []      # 公式元素
-    code_elements = []     # 代码元素
-    text_elements = []     # 其他所有文本元素（18种）
-    figure_results = []    # 图片元素
+    tab_elements = []      
+    equ_elements = []     
+    code_elements = []    
+    text_elements = []     
+    figure_results = []    
     previous_box = None
     reading_order = 0
 
-    # 收集元素并按处理方式分组
+    # Collect elements and group
     for bbox, label in layout_results:
         try:
             x1, y1, x2, y2, orig_x1, orig_y1, orig_x2, orig_y2, previous_box = process_coordinates(
@@ -216,7 +215,7 @@ def process_elements(layout_results, padded_image, dims, model, max_batch_size, 
                         "reading_order": reading_order,
                     })
                 else:
-                    # 准备元素信息
+                    # Prepare element information
                     element_info = {
                         "crop": pil_crop,
                         "label": label,
@@ -224,7 +223,6 @@ def process_elements(layout_results, padded_image, dims, model, max_batch_size, 
                         "reading_order": reading_order,
                     }
                     
-                    # 按处理方式分组（只区分需要特殊prompt的类型）
                     if label == "tab":
                         tab_elements.append(element_info)
                     elif label == "equ":
@@ -232,7 +230,6 @@ def process_elements(layout_results, padded_image, dims, model, max_batch_size, 
                     elif label == "code":
                         code_elements.append(element_info)
                     else:
-                        # 其他所有类型都归为文本（18种）
                         text_elements.append(element_info)
 
             reading_order += 1
@@ -241,10 +238,8 @@ def process_elements(layout_results, padded_image, dims, model, max_batch_size, 
             print(f"Error processing bbox with label {label}: {str(e)}")
             continue
 
-    # 初始化结果
     recognition_results = figure_results.copy()
     
-    # 分别处理四类元素
     if tab_elements:
         results = process_element_batch(tab_elements, model, "Parse the table in the image.", max_batch_size)
         recognition_results.extend(results)
@@ -261,7 +256,6 @@ def process_elements(layout_results, padded_image, dims, model, max_batch_size, 
         results = process_element_batch(text_elements, model, "Read text in the image.", max_batch_size)
         recognition_results.extend(results)
 
-    # 按阅读顺序排序
     recognition_results.sort(key=lambda x: x.get("reading_order", 0))
 
     return recognition_results

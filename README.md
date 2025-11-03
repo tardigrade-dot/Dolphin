@@ -171,7 +171,7 @@ python demo_page.py --model_path ./hf_model --save_dir ./results \
 # Process with custom batch size for parallel element decoding
 python demo_page.py --model_path ./hf_model --save_dir ./results \
     --input_path ./demo/page_imgs \
-    --max_batch_size 16
+    --max_batch_size 8
 ```
 
 ### 🧩 Element-level Parsing
