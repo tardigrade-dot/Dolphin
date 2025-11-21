@@ -1,3 +1,5 @@
+#### ⚠️ 使用方式见 ocr_dolphin_example.ipynb, 达成从pdf提取全部文本, 且过滤掉不需要的部分. 修改为支持单个page保存, 通过后处理完成整个pdf的处理
+
 <div align="center">
   <img src="./assets/dolphin.png" width="300">
 </div>
