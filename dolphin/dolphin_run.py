@@ -130,6 +130,7 @@ def process_document(document_path, model, save_dir, max_batch_size=None, save_i
 
             if page_idx < start_index:
                 print(f"page_idx {page_idx} smaller than start_index {start_index}, continue to next ...")
+                continue
             # Generate output name for this page
             base_name = os.path.splitext(os.path.basename(document_path))[0]
             page_name = f"{base_name}_page_{page_idx + 1:03d}"
@@ -317,7 +318,7 @@ def process_element_batch(elements, model, prompt, max_batch_size=None):
 def main():
     parser = argparse.ArgumentParser(description="Document parsing based on DOLPHIN")
     parser.add_argument("--model_path", default="./hf_model", help="Path to Hugging Face model")
-    parser.add_argument("--start_index", default=0, help="start index for a PDF file")
+    parser.add_argument("--start_index", type=int, default=0, help="start index for a PDF file")
     parser.add_argument("--input_path", type=str, default="./demo", help="Path to input image/PDF or directory of files")
     parser.add_argument("--save_individual", type=str, default=True, help="save_individual or not, default True")
     parser.add_argument(
